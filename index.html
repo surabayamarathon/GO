@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>EXO Ticket</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #06121f;
+  color: white;
+}
+
+.banner{
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.judul {
+  text-align: center;
+  padding: 20px;
+}
+.judul h1 { font-size: 24px; }
+.judul h2 { color: #00c6ff; }
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  background: linear-gradient(145deg, #0b1f3a, #071427);
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(0,255,255,0.2);
+}
+
+.title {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: black;
+  color: white;
+  border: none;
+  margin-top: 10px;
+}
+
+.ticket {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+}
+
+.ticket.active {
+  border: 1px solid cyan;
+  box-shadow: 0 0 10px cyan;
+}
+
+.label { flex: 1; }
+.price { font-weight: bold; }
+
+.cat1 { color: red; }
+.cat2 { color: yellow; }
+.cat3 { color: cyan; }
+.cat4 { color: lightgreen; }
+.cat5 { color: pink; }
+.cat6 { color: violet; }
+
+.total {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.qris {
+  text-align: center;
+}
+.qris img {
+  width: 220px;
+  margin-top: 10px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  border: none;
+  border-radius: 15px;
+  color: white;
+  font-size: 16px;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="banner">
+  <img src="event.jpg"> <!-- GANTI dengan poster kamu -->
+</div>
+
+<div class="judul">
+  <h1>FORM PEMBELIAN TIKET</h1>
+  <h2>EXO PLANET #6</h2>
+  <p>EXplOration in Jakarta</p>
+  <p>7 Juni 2026 | Indonesia Arena</p>
+</div>
+
+<div class="container">
+
+<!-- DATA PEMBELI -->
+<div class="card">
+  <div class="title">DATA PEMBELI</div>
+  <input type="text" id="nama" placeholder="Nama Lengkap">
+  <input type="email" id="email" placeholder="Email Aktif">
+  <input type="tel" id="wa" placeholder="Nomor WhatsApp">
+  <input type="text" id="kota" placeholder="Kota Domisili">
+</div>
+
+<!-- TIKET -->
+<div class="card">
+  <div class="title">PILIHAN TIKET</div>
+
+  <div class="ticket" onclick="pilih(this,3500000,'CAT E / X / O / L')">
+    <span class="label">CAT E / X / O / L (Standing)</span>
+    <span class="price">IDR 3.500.000</span>
+  </div>
+
+  <div class="ticket" onclick="pilih(this,3950000,'Horizon Box')">
+    <span class="label">Horizon Box</span>
+    <span class="price">IDR 3.950.000</span>
+  </div>
+
+  <div class="ticket" onclick="pilih(this,3550000,'CAT 1')">
+    <span class="label cat1">CAT 1</span>
+    <span class="price">IDR 3.550.000</span>
+  </div>
+
+  <div class="ticket" onclick="pilih(this,3300000,'CAT 2')">
+    <span class="label cat2">CAT 2</span>
+    <span class="price">IDR 3.300.000</span>
+  </div>
+
+  <div class="ticket" onclick="pilih(this,2700000,'CAT 3')">
+    <span class="label cat3">CAT 3</span>
+    <span class="price">IDR 2.700.000</span>
+  </div>
+
+  <div class="ticket" onclick="pilih(this,2250000,'CAT 4')">
+    <span class="label cat4">CAT 4</span>
+    <span class="price">IDR 2.250.000</span>
+  </div>
+
+  <div class="ticket" onclick="pilih(this,2000000,'CAT 5')">
+    <span class="label cat5">CAT 5</span>
+    <span class="price">IDR 2.000.000</span>
+  </div>
+
+  <div class="ticket" onclick="pilih(this,1550000,'CAT 6')">
+    <span class="label cat6">CAT 6</span>
+    <span class="price">IDR 1.550.000</span>
+  </div>
+
+  <select id="qty">
+    <option value="1">Jumlah Tiket: 1</option>
+    <option value="2">Jumlah Tiket: 2</option>
+    <option value="3">Jumlah Tiket: 3</option>
+  </select>
+
+  <div class="total" id="total">Total: IDR 0</div>
+</div>
+
+<!-- QRIS -->
+<div class="card">
+  <div class="title">SCAN QRIS</div>
+  <div class="qris">
+    <img src="qris.jpg"> <!-- GANTI QR kamu -->
+  </div>
+</div>
+
+<!-- UPLOAD -->
+<div class="card">
+  <div class="title">UPLOAD BUKTI PEMBAYARAN</div>
+  <input type="file" id="bukti" accept="image/*">
+</div>
+
+<button onclick="kirim()">SUBMIT ORDER</button>
+
+</div>
+
+<script>
+let harga = 0;
+let tiketDipilih = "";
+
+function pilih(el, value, nama){
+  document.querySelectorAll('.ticket').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  harga = value;
+  tiketDipilih = nama;
+  hitung();
+}
+
+function hitung(){
+  let qty = document.getElementById("qty").value;
+  let total = harga * qty;
+  document.getElementById("total").innerText =
+    "Total: IDR " + total.toLocaleString("id-ID");
+}
+
+document.getElementById("qty").addEventListener("change", hitung);
+
+function kirim(){
+  let nama = document.getElementById("nama").value;
+  let email = document.getElementById("email").value;
+  let wa = document.getElementById("wa").value;
+
+  if(nama==="" || email==="" || wa===""){
+    alert("Lengkapi data dulu!");
+    return;
+  }
+
+  if(harga === 0){
+    alert("Pilih tiket dulu!");
+    return;
+  }
+
+  alert("Pesanan berhasil! Lanjut ke pembayaran.");
+  window.location.href = "https://succes-payment.carrd.co";
+}
+</script>
+
+</body>
+</html>
